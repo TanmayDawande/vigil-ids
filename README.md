@@ -7,7 +7,7 @@ the goal is to flag attack traffic and to measure honestly how well that works, 
 ## status
 
 - done: cleaning and combining the raw data (`prepare.py`), and a cross-file evaluation of a random forest (`randomForest.py`)
-- next: add day and attack name columns, split train and test by day, better features, a tuned alert threshold, isolation forest for unseen attacks
+- done: add day and attack name columns, split train and test by day, better features, a tuned alert threshold, isolation forest for unseen attacks
 
 ## data
 

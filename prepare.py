@@ -1,6 +1,7 @@
 import glob
 import pandas as pd
 import numpy as np
+import os
 
 files = sorted(glob.glob('data/*.csv'))
 print('found', len(files), 'files')
@@ -16,8 +17,13 @@ def cleaner(file_path):
     df = df.replace([np.inf, -np.inf], np.nan)
     #drops missing values
     df = df.dropna(axis = 0)
-    df['Label'] = df['Label'].apply(lambda x: 0 if x == "BENIGN" else 1)
+    df['attack'] = df['Label'].str.strip().str.replace(r'[^\x00-\x7F]+', '-', regex=True)
+    file_name = os.path.basename(file_path)
+    df['day'] = (file_name.split('-', 1))[0]
+    df['source_file'] = file_name
+    df['Label'] = (df['attack'] != 'BENIGN').astype(int)
     return df
+
 
 print("-------- Starting file cleaning --------")
 for path in files:
@@ -34,3 +40,4 @@ check = pd.read_parquet('data/clean.parquet')
 print(len(check))
 print(check['Label'].value_counts())
 print(check.shape)
+print(check['day'].value_counts())
